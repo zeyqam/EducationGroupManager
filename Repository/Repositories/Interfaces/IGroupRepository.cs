@@ -9,5 +9,9 @@ namespace Repository.Repositories.Interfaces
 {
     public interface IGroupRepository:IBaseRepository<Group>
     {
+        Task<IEnumerable<Group>> FilterByEducationNameAsync(string educationName);
+        Task<IEnumerable<Group>> GetAllWithEducationIdAsync(int educationId);
+        Task<IEnumerable<Group>> SortWithCapacityAsync();
+        Task<bool> EducationExistsAsync(int educationId);
     }
 }

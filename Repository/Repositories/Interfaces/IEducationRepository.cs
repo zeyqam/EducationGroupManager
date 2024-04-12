@@ -9,5 +9,7 @@ namespace Repository.Repositories.Interfaces
 {
     public interface IEducationRepository:IBaseRepository<Education>
     {
+        Task<IEnumerable<Education>> GetAllWithGroupsAsync();
+        Task<IEnumerable<Education>> SortByCreatedDateAsync();
     }
 }

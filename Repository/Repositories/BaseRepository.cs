@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Repositories.Interfaces;
 using System;
@@ -17,6 +18,13 @@ namespace Repository.Repositories
         {
             _context = new AppDbContext();
         }
+
+        public async Task AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(T entity)
         {
              _context.Set<T>().Remove(entity);

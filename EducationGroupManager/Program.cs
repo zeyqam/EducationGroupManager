@@ -1,10 +1,7 @@
-﻿namespace EducationGroupManager
-{
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
-    }
-}
+﻿
+using EducationGroupManager.Controllers;
+
+//EducationController educationController= new EducationController();
+//await educationController.CreateEducationAsync();
+GroupController groupController = new GroupController();
+await groupController.GroupCreate();
