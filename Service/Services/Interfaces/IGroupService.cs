@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace Service.Services.Interfaces
     {
         Task CreateGroupAsync(string name, int capacity, int educationId);
         Task<bool> CheckIfEducationExistsAsync(int educationId);
+        Task<IEnumerable<Group>> GetAllAsync();
     }
 }

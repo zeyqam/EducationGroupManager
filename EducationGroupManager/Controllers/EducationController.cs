@@ -48,5 +48,16 @@ namespace EducationGroupManager.Controllers
             await _educationService.CreateEducationAsync(name, color);
             ConsoleColor.Green.WriteConsole("Data successfully added");
         }
+
+        public async Task GetAllEducationAsync()
+        {
+            var datas = await _educationService.GetAllAsync();
+            foreach (var item in datas)
+            {
+                string data = $"Name: {item.Name}, Color: {item.Color}";
+                Console.WriteLine(data);
+            }
+
+        }
     }
 }

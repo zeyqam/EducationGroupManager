@@ -10,5 +10,6 @@ namespace Service.Services.Interfaces
     public interface IEducationService
     {
         Task<Education> CreateEducationAsync(string name,string color);
+        Task<IEnumerable<Education>> GetAllAsync();
     }
 }

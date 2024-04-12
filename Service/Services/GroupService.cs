@@ -47,5 +47,10 @@ namespace Service.Services
             await _groupRepo.AddAsync(newGroup);
 
         }
+
+        public  async Task<IEnumerable<Group>> GetAllAsync()
+        {
+            return await _groupRepo.GetAllAsync();
+        }
     }
 }

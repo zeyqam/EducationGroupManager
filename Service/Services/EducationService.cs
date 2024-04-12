@@ -31,5 +31,10 @@ namespace Service.Services
              await _educationRepo.AddAsync(newEducation);
             return newEducation;
         }
+
+        public async  Task<IEnumerable<Education>> GetAllAsync()
+        {
+           return await _educationRepo.GetAllAsync();
+        }
     }
 }

@@ -21,13 +21,13 @@ namespace EducationGroupManager.Controllers
 
         }
 
-        public async Task GroupCreate()
+        public async Task GroupCreateAsync()
         {
             string name;
             bool isValidName = false;
             do
             {
-                Console.WriteLine("Qrup adını daxil edin:");
+                ConsoleColor.Cyan.WriteConsole("Qrup adını daxil edin:");
                 name = Console.ReadLine();
                 isValidName = IsNameValid(name);
             } while (!isValidName);
@@ -36,12 +36,12 @@ namespace EducationGroupManager.Controllers
             bool isValidCapacity = false;
             do
             {
-                Console.WriteLine("Qrupun kapasitesini daxil edin:");
+                ConsoleColor.Cyan.WriteConsole("Qrupun kapasitesini daxil edin:");
                 string capacityInput = Console.ReadLine();
                 isValidCapacity = int.TryParse(capacityInput, out capacity) && capacity > 0;
                 if (!isValidCapacity)
                 {
-                    Console.WriteLine("Xahiş edirik, düzgün bir kapasite daxil edin.");
+                    ConsoleColor.Red.WriteConsole("Xahiş edirik, düzgün bir kapasite daxil edin.");
                 }
             } while (!isValidCapacity);
 
@@ -49,19 +49,19 @@ namespace EducationGroupManager.Controllers
             bool educationExists = false;
             do
             {
-                Console.WriteLine("Təhsil İD-sini daxil edin:");
+                ConsoleColor.Cyan.WriteConsole("Təhsil İD-sini daxil edin:");
                 string educationIdInput = Console.ReadLine();
                 if (int.TryParse(educationIdInput, out educationId))
                 {
                     educationExists = await _groupService.CheckIfEducationExistsAsync(educationId);
                     if (!educationExists)
                     {
-                        Console.WriteLine("Xəta: Daxil edilmiş təhsil İD-si mövcud deyil. Əvvəlcə təhsil yaradın.");
+                        ConsoleColor.Red.WriteConsole("Xəta: Daxil edilmiş təhsil İD-si mövcud deyil. Əvvəlcə təhsil yaradın.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Düzgün Təhsil İD formatı daxil edilməyib. Xahiş edirik yenidən daxil edin:");
+                    ConsoleColor.Red.WriteConsole("Düzgün Təhsil İD formatı daxil edilməyib. Xahiş edirik yenidən daxil edin:");
                 }
             } while (!educationExists);
 
@@ -74,11 +74,22 @@ namespace EducationGroupManager.Controllers
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                Console.WriteLine("Qrup adı boş ola bilməz.");
+                ConsoleColor.Red.WriteConsole("Qrup adı boş ola bilməz.");
                 return false;
             }
 
             return true;
+        }
+
+
+        public async Task GetAllGroupsAsync()
+        {
+            var datas = await _groupService.GetAllAsync();
+            foreach (var item in datas)
+            {
+                string data = $"Name: {item.Name}, Capacity: {item.Capacity}, Education id : {item.EducationId}";
+                Console.WriteLine(data);
+            }
         }
     }
 
