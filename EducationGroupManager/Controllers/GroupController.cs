@@ -1,4 +1,5 @@
-﻿using Repository.Repositories;
+﻿using Domain.Models;
+using Repository.Repositories;
 using Repository.Repositories.Interfaces;
 using Service.Helpers.Exceptions;
 using Service.Helpers.Extensions;
@@ -121,9 +122,9 @@ namespace EducationGroupManager.Controllers
 
                     if (group != null)
                     {
-                        
+
                         ConsoleColor.Green.WriteConsole($"Id:{group.Id},Group name: {group.Name}, Capacity: {group.Capacity}, Education Id: {group.EducationId}");
-                        return; 
+                        return;
                     }
                     else
                     {
@@ -161,7 +162,7 @@ namespace EducationGroupManager.Controllers
                     var groups = await _groupService.GetGroupsByEducationIdAsync(id);
                     if (groups.Any())
                     {
-                            ConsoleColor.Green.WriteConsole($"Groups for Education ID {id}:");
+                        ConsoleColor.Green.WriteConsole($"Groups for Education ID {id}:");
                         foreach (var group in groups)
                         {
                             ConsoleColor.Yellow.WriteConsole($"Group ID: {group.Id}, Name: {group.Name}, Capacity: {group.Capacity}, Created Date: {group.CreatedDate}");
@@ -204,7 +205,7 @@ namespace EducationGroupManager.Controllers
                 {
                     await _groupService.DeleteGroupAsync(id);
                     ConsoleColor.Green.WriteConsole($"Group with ID {id} deleted successfully!");
-                    return; 
+                    return;
                 }
                 catch (ArgumentException ex)
                 {
@@ -221,9 +222,103 @@ namespace EducationGroupManager.Controllers
 
             } while (true);
         }
+
+
+        public async Task UpdateGroupAsync()
+        {
+            Console.WriteLine("Enter the ID of the group to update:");
+            int id;
+            while (!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid group ID:");
+            }
+
+            Console.WriteLine("Enter the new name for the group:");
+            string newName = Console.ReadLine();
+
+            Console.WriteLine("Enter the new capacity for the group:");
+            int newCapacity;
+            while (!int.TryParse(Console.ReadLine(), out newCapacity))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number for capacity:");
+            }
+
+            try
+            {
+                Group existingGroup = await _groupService.GetByIdAsync(id);
+                if (existingGroup != null)
+                {
+                    existingGroup.Name = newName;
+                    existingGroup.Capacity = newCapacity;
+                    if (string.IsNullOrWhiteSpace(newName) && newCapacity <= 0)
+                    {
+                        Console.WriteLine("No new data provided. Existing data remains unchanged.");
+                        return;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(newName))
+                        {
+                            existingGroup.Name = newName;
+                        }
+
+                        if (newCapacity > 0)
+                        {
+                            existingGroup.Capacity = newCapacity;
+                        }
+
+                        await _groupService.UpdateGroupAsync(existingGroup);
+                        Console.WriteLine("Group updated successfully.");
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Group not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating group: {ex.Message}");
+            }
+        }
+        public async Task SearchGroupByNameAsync()
+        {
+            Console.WriteLine("Welcome to the Group Search");
+
+            while (true)
+            {
+                Console.WriteLine("\nSearch groups by name");
+                Console.Write("Enter group name: ");
+                string name = Console.ReadLine();
+
+                var groups = await _groupService.SearchGroupAsync(name);
+
+                if (groups != null && groups.Any())
+                {
+                    Console.WriteLine("\nMatching Groups:");
+                    foreach (var group in groups)
+                    {
+                        Console.WriteLine($"ID: {group.Id}, Name: {group.Name}, Capacity:{group.Capacity}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No groups found with the given name.");
+                }
+
+                Console.WriteLine("\nDo you want to search for another group? (yes/no)");
+                string response = Console.ReadLine().ToLower();
+                if (response != "yes")
+                {
+                    Console.WriteLine("Exiting the application. Goodbye!");
+                    break;
+                }
+            }
+
+        }
+
+
     }
-
-
-
 
 }

@@ -10,6 +10,6 @@ namespace Service.Helpers.Enums
     {
         CreateEducation=1,CreateGroup,
         GetAllEducation,GetAllGroups,
-        GetByIdEducation,GetGroupById,GetAllGroupsWithEducationId,DeleteEducation,DeleteGroup,UpdateEducation,SearchEducation,GetAllWithGroups,SortWithCreatedDateEducation,UpdateGroup,SearchGroup,FilterByEducationName,SortWithCapacity
+        GetByIdEducation,GetGroupById,GetAllGroupsWithEducationId,DeleteEducation,DeleteGroup,UpdateEducation,UpdateGroup,SearchEducation,SearchGroup,GetAllWithGroups,SortWithCreatedDateEducation,FilterByEducationName,SortWithCapacity
     }
 }

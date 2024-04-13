@@ -4,10 +4,12 @@ using Repository.Repositories;
 using Repository.Repositories.Interfaces;
 using Service.Helpers.Constants;
 using Service.Helpers.Exceptions;
+using Service.Helpers.Extensions;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -78,6 +80,41 @@ namespace Service.Services
                 throw new NotFoundException(ResponseMessages.DataNotFound);
             }
             return education;
+        }
+
+        public async Task<IEnumerable<Education>> SearchEducationAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                 ConsoleColor.Red.WriteConsole("Name cannot be null or empty.");
+            }
+
+            name = name.Trim().ToLower();
+
+            Expression<Func<Education, bool>> predicate = education => education.Name.ToLower().Contains(name);
+            return await _educationRepo.SearchAsync(predicate);
+        }
+
+        public async Task UpdateEducationAsync(Education updateEducation)
+        {
+            if (updateEducation == null)
+                throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            Education existingEducation = await _educationRepo.GetByIdAsync(updateEducation.Id);
+            if (existingEducation != null)
+            {
+                existingEducation.Name = updateEducation.Name;
+                existingEducation.Color = updateEducation.Color;
+            }
+            else
+            {
+                throw new InvalidOperationException("Education not found");
+            }
+
+            if (existingEducation == null)
+                throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            await _educationRepo.UpdateAsync(existingEducation);
         }
     }
     

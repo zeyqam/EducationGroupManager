@@ -1,4 +1,5 @@
-﻿using Service.Helpers.Exceptions;
+﻿using Domain.Models;
+using Service.Helpers.Exceptions;
 using Service.Helpers.Extensions;
 using Service.Services;
 using Service.Services.Interfaces;
@@ -15,14 +16,14 @@ namespace EducationGroupManager.Controllers
         private readonly IEducationService _educationService;
         public EducationController()
         {
-            _educationService=new EducationService();
-            
+            _educationService = new EducationService();
+
         }
 
         public async Task CreateEducationAsync()
         {
             ConsoleColor.Cyan.WriteConsole("Add education name:");
-            Name: string name = Console.ReadLine();
+        Name: string name = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(name))
             {
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
@@ -31,7 +32,7 @@ namespace EducationGroupManager.Controllers
             int minLength = 3;
             int maxLength = 50;
 
-            
+
             if (name.Length < minLength || name.Length > maxLength)
             {
                 ConsoleColor.Red.WriteConsole($" Name must be between {minLength} and {maxLength} characters.");
@@ -39,7 +40,7 @@ namespace EducationGroupManager.Controllers
             }
 
             ConsoleColor.Cyan.WriteConsole("Add education color:");
-            Color: string color = Console.ReadLine();
+        Color: string color = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(color))
             {
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
@@ -68,7 +69,7 @@ namespace EducationGroupManager.Controllers
             do
             {
                 ConsoleColor.Cyan.WriteConsole("Add Education id: ");
-               Id: idStr = Console.ReadLine();
+            Id: idStr = Console.ReadLine();
 
                 if (!int.TryParse(idStr, out id))
                 {
@@ -84,7 +85,7 @@ namespace EducationGroupManager.Controllers
 
                 try
                 {
-                    var education = await _educationService.GetByIdAsync(id); 
+                    var education = await _educationService.GetByIdAsync(id);
 
                     if (education != null)
                     {
@@ -131,7 +132,7 @@ namespace EducationGroupManager.Controllers
                 {
                     await _educationService.DeleteEducationAsync(id);
                     ConsoleColor.Green.WriteConsole($"Education with ID {id} and its associated groups deleted successfully!");
-                    return; 
+                    return;
                 }
                 catch (ArgumentException ex)
                 {
@@ -147,6 +148,97 @@ namespace EducationGroupManager.Controllers
                 }
 
             } while (true);
+        }
+
+
+        public async Task UpdateEducationAsync()
+        {
+            Console.WriteLine("Enter the ID of the education to update:");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid education ID.");
+                return;
+            }
+
+            Console.WriteLine("Enter the new name for the education:");
+            string newName = Console.ReadLine();
+
+            Console.WriteLine("Enter the new color for the education:");
+            string newColor = Console.ReadLine();
+
+            try
+            {
+                Education existingEducation = await _educationService.GetByIdAsync(id);
+                if (existingEducation != null)
+                {
+
+                    if (string.IsNullOrWhiteSpace(newName) && string.IsNullOrWhiteSpace(newColor))
+                    {
+                        Console.WriteLine("No new data provided. Existing data remains unchanged.");
+                    }
+                    else
+                    {
+
+                        if (!string.IsNullOrWhiteSpace(newName))
+                        {
+                            existingEducation.Name = newName;
+                        }
+
+
+                        if (!string.IsNullOrWhiteSpace(newColor))
+                        {
+                            existingEducation.Color = newColor;
+                        }
+
+
+                        await _educationService.UpdateEducationAsync(existingEducation);
+                        Console.WriteLine("Education updated successfully.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Education not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating education: {ex.Message}");
+            }
+        }
+        public async Task SearchEducationByNameAsync()
+        {
+            Console.WriteLine("Welcome to the Education Search");
+
+            while (true)
+            {
+                Console.WriteLine("\nSearch education by name");
+                Console.Write("Enter education name: ");
+                string name = Console.ReadLine();
+
+                var educations = await _educationService.SearchEducationAsync(name);
+
+                if (educations != null && educations.Any())
+                {
+                    Console.WriteLine("\nMatching Educations:");
+                    foreach (var education in educations)
+                    {
+                        Console.WriteLine($"ID: {education.Id}, Name: {education.Name}, Color: {education.Color}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No educations found with the given name.");
+                }
+
+                Console.WriteLine("\nDo you want to search for another education? (yes/no)");
+                string response = Console.ReadLine().ToLower();
+                if (response != "yes")
+                {
+                    Console.WriteLine("Exiting the application. Goodbye!");
+                    break;
+                }
+            }
+
         }
     }
 }

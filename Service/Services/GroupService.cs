@@ -7,7 +7,9 @@ using Service.Helpers.Extensions;
 using Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,6 +99,40 @@ namespace Service.Services
             return await _groupRepo.GetAllWithEducationIdAsync((int)educationId);
         }
 
-       
+        public async Task<IEnumerable<Group>> SearchGroupAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                ConsoleColor.Red.WriteConsole("Name cannot be null or empty.");
+            }
+
+            name = name.Trim().ToLower();
+
+            Expression<Func<Group, bool>> predicate = group => group.Name.ToLower().Contains(name);
+            return await _groupRepo.SearchAsync(predicate);
+        }
+
+        public async Task UpdateGroupAsync(Group updateGroup)
+        {
+            if (updateGroup == null)
+                throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            Group existingGroup = await _groupRepo.GetByIdAsync(updateGroup.Id);
+            if (existingGroup != null)
+            {
+                existingGroup.Name = updateGroup.Name;
+                existingGroup.Capacity = updateGroup.Capacity;
+
+            }
+            else
+            {
+                throw new InvalidOperationException("Education not found");
+            }
+
+            if (existingGroup == null)
+                throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            await _groupRepo.UpdateAsync(existingGroup);
+        }
     }
 }

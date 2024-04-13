@@ -48,6 +48,19 @@ while (true)
             case (int)OperationType.DeleteGroup:
                 groupController.DeleteGroupsAsync();
                 break;
+            case (int)OperationType.UpdateEducation:
+                educationController.UpdateEducationAsync();
+                break;
+            case (int)OperationType.UpdateGroup:
+                groupController.UpdateGroupAsync();
+                break;
+            case (int)OperationType.SearchEducation:
+                educationController.SearchEducationByNameAsync();
+                break;
+            case (int)OperationType.SearchGroup:
+                groupController.SearchGroupByNameAsync();
+                break;
+
 
 
 
@@ -85,10 +98,10 @@ static void GetMenues()
     Console.WriteLine("║   7  ║ GetAllGroupsWithEducationId                      ║");
     Console.WriteLine("║   8  ║ DeleteEducation                                  ║");
     Console.WriteLine("║   9  ║ DeleteGroup                                      ║");
-    Console.WriteLine("║  10  ║ Get Student by Id                                ║");
-    Console.WriteLine("║  11  ║ Delete Student                                   ║");
-    Console.WriteLine("║  12  ║ Get Students by Age                              ║");
-    Console.WriteLine("║  13  ║ Get all students by Group Id                     ║");
+    Console.WriteLine("║  10  ║ UpdateEducation                                  ║");
+    Console.WriteLine("║  11  ║ UpdateGroup                                      ║");
+    Console.WriteLine("║  12  ║ SerachEducation                                  ║");
+    Console.WriteLine("║  13  ║ SerachGroups                                     ║");
     Console.WriteLine("║  14  ║ Search Groups by Name                            ║");
     Console.WriteLine("║  15  ║ Search students by Name/Surname                  ║");
     Console.WriteLine("╚══════╩══════════════════════════                           ");
