@@ -28,9 +28,11 @@ namespace Repository.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Group>> GetAllWithEducationIdAsync(int educationId)
+        public async Task<IEnumerable<Group>> GetAllWithEducationIdAsync(int educationId)
         {
-            throw new NotImplementedException();
+            return await _context.Groups
+            .Where(g => g.EducationId == educationId)
+            .ToListAsync();
         }
 
         public Task<IEnumerable<Group>> SortWithCapacityAsync()

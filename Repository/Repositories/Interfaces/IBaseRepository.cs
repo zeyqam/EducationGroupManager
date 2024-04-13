@@ -12,7 +12,7 @@ namespace Repository.Repositories.Interfaces
     {
         Task AddAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(int? id);
         Task DeleteAsync(T entity);
         Task UpdateAsync(T entity);
         Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> predicate);

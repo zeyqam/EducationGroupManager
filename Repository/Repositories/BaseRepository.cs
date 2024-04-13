@@ -36,9 +36,9 @@ namespace Repository.Repositories
             return await Task.FromResult(_context.Set<T>());        
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int? id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _context.Set<T>().FirstOrDefaultAsync(m=> m.Id ==id);
         }
 
         public async Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> predicate)

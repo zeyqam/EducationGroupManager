@@ -8,7 +8,8 @@ namespace Service.Helpers.Enums
 {
     public enum OperationType
     {
-        GetAllEducation=1,
-        GetByIdEducation,DeleteEducation,UpdateEducation,SearchEducation,GetAllWithGroups,SortWithCreatedDateEducation,GetAllgroup,GetByIdGroup,DeleteGroup,UpdateGroup,SearchGroup,FilterByEducationName,GetAllWithEducationId,SortWithCapacity
+        CreateEducation=1,CreateGroup,
+        GetAllEducation,GetAllGroups,
+        GetByIdEducation,GetGroupById,GetAllGroupsWithEducationId,DeleteEducation,DeleteGroup,UpdateEducation,SearchEducation,GetAllWithGroups,SortWithCreatedDateEducation,UpdateGroup,SearchGroup,FilterByEducationName,SortWithCapacity
     }
 }

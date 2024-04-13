@@ -12,5 +12,8 @@ namespace Service.Services.Interfaces
         Task CreateGroupAsync(string name, int capacity, int educationId);
         Task<bool> CheckIfEducationExistsAsync(int educationId);
         Task<IEnumerable<Group>> GetAllAsync();
+        Task<Group> GetByIdAsync(int? id);
+        Task DeleteGroupAsync(int? id);
+        Task<IEnumerable<Group>> GetGroupsByEducationIdAsync(int? educationId);
     }
 }

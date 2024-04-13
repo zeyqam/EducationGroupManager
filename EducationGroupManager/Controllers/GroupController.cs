@@ -1,5 +1,6 @@
 ﻿using Repository.Repositories;
 using Repository.Repositories.Interfaces;
+using Service.Helpers.Exceptions;
 using Service.Helpers.Extensions;
 using Service.Services;
 using Service.Services.Interfaces;
@@ -87,9 +88,138 @@ namespace EducationGroupManager.Controllers
             var datas = await _groupService.GetAllAsync();
             foreach (var item in datas)
             {
-                string data = $"Name: {item.Name}, Capacity: {item.Capacity}, Education id : {item.EducationId}";
+                string data = $"Id:{item.Id},Name: {item.Name}, Capacity: {item.Capacity}, Education id : {item.EducationId}";
                 Console.WriteLine(data);
             }
+        }
+
+        public async Task GetGroupByIdAsync()
+        {
+            int id;
+            string idStr;
+
+            do
+            {
+                ConsoleColor.Cyan.WriteConsole("Add Group id: ");
+                idStr = Console.ReadLine();
+
+                if (!int.TryParse(idStr, out id))
+                {
+                    ConsoleColor.Red.WriteConsole("Id format is wrong, please try again");
+                    continue;
+                }
+
+                if (id <= 0)
+                {
+                    ConsoleColor.Red.WriteConsole("Invalid ID. ID must be greater than zero.");
+                    continue;
+                }
+
+                try
+                {
+                    var group = await _groupService.GetByIdAsync(id);
+
+                    if (group != null)
+                    {
+                        
+                        ConsoleColor.Green.WriteConsole($"Id:{group.Id},Group name: {group.Name}, Capacity: {group.Capacity}, Education Id: {group.EducationId}");
+                        return; 
+                    }
+                    else
+                    {
+                        ConsoleColor.Red.WriteConsole("Group not found.");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                }
+
+            } while (true);
+        }
+
+
+        public async Task GetGroupsByEducationIdAsync()
+        {
+            int id;
+            string idStr;
+
+            do
+            {
+                ConsoleColor.Cyan.WriteConsole("Enter Education ID: ");
+                idStr = Console.ReadLine();
+
+                if (!int.TryParse(idStr, out id))
+                {
+                    ConsoleColor.Red.WriteConsole("ID format is wrong, please try again");
+                    continue;
+                }
+
+                try
+                {
+                    var groups = await _groupService.GetGroupsByEducationIdAsync(id);
+                    if (groups.Any())
+                    {
+                            ConsoleColor.Green.WriteConsole($"Groups for Education ID {id}:");
+                        foreach (var group in groups)
+                        {
+                            ConsoleColor.Yellow.WriteConsole($"Group ID: {group.Id}, Name: {group.Name}, Capacity: {group.Capacity}, Created Date: {group.CreatedDate}");
+                        }
+                    }
+                    else
+                    {
+                        ConsoleColor.Yellow.WriteConsole($"No groups found for Education ID {id}.");
+                    }
+                    return;
+                }
+                catch (ArgumentException ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                }
+            } while (true);
+        }
+
+        public async Task DeleteGroupsAsync()
+        {
+            int id;
+            string idStr;
+
+            do
+            {
+                ConsoleColor.Cyan.WriteConsole("Delete Group id: ");
+                idStr = Console.ReadLine();
+
+                if (!int.TryParse(idStr, out id))
+                {
+                    ConsoleColor.Red.WriteConsole("Id format is wrong, please try again");
+                    continue;
+                }
+
+                try
+                {
+                    await _groupService.DeleteGroupAsync(id);
+                    ConsoleColor.Green.WriteConsole($"Group with ID {id} deleted successfully!");
+                    return; 
+                }
+                catch (ArgumentException ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                }
+                catch (NotFoundException ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                }
+
+            } while (true);
         }
     }
 

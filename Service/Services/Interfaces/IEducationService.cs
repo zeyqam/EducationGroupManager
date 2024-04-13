@@ -11,5 +11,7 @@ namespace Service.Services.Interfaces
     {
         Task<Education> CreateEducationAsync(string name,string color);
         Task<IEnumerable<Education>> GetAllAsync();
+        Task<Education>GetByIdAsync(int? id);
+        Task DeleteEducationAsync(int? id);
     }
 }
