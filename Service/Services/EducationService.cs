@@ -67,6 +67,11 @@ namespace Service.Services
            return await _educationRepo.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Education>> GetAllWithGroupsAsync()
+        {
+            return await _educationRepo.GetAllWithGroupsAsync();
+        }
+
         public async Task<Education> GetByIdAsync(int? id)
         {
             if (id == null)
@@ -93,6 +98,11 @@ namespace Service.Services
 
             Expression<Func<Education, bool>> predicate = education => education.Name.ToLower().Contains(name);
             return await _educationRepo.SearchAsync(predicate);
+        }
+
+        public async Task<IEnumerable<Education>> SortByCreatedDateAsync()
+        {
+            return await _educationRepo.SortByCreatedDateAsync();
         }
 
         public async Task UpdateEducationAsync(Education updateEducation)

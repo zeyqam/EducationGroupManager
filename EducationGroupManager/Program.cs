@@ -12,7 +12,7 @@ GroupController groupController = new GroupController();
 
 while (true)
 {
-    GetMenues();
+    GetMenus();
     Operation: string operationStr=Console.ReadLine();
     int operation;
     bool isCorrectOperationFormat=int.TryParse(operationStr, out operation);
@@ -60,6 +60,19 @@ while (true)
             case (int)OperationType.SearchGroup:
                 groupController.SearchGroupByNameAsync();
                 break;
+            case (int)OperationType.GetAllWithGroups:
+                educationController.GetAllWithGroupsAsync();
+                break;
+            case (int)OperationType.SortWithCreatedDateEducation:
+                educationController.SortByCreatedDateAsync();
+                break;
+            case (int)OperationType.FilterByEducationName:
+                groupController.FilterByEducationNameAsync();
+                break;
+            case (int)OperationType.SortWithCapacity:
+                groupController.SortByCapacityAsync();
+                break;
+
 
 
 
@@ -81,7 +94,7 @@ while (true)
         goto Operation;
     }
 }
-static void GetMenues()
+static void GetMenus()
 {
     Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("╔════════════════════════════════════════════════════════╗");
@@ -100,9 +113,11 @@ static void GetMenues()
     Console.WriteLine("║   9  ║ DeleteGroup                                      ║");
     Console.WriteLine("║  10  ║ UpdateEducation                                  ║");
     Console.WriteLine("║  11  ║ UpdateGroup                                      ║");
-    Console.WriteLine("║  12  ║ SerachEducation                                  ║");
-    Console.WriteLine("║  13  ║ SerachGroups                                     ║");
-    Console.WriteLine("║  14  ║ Search Groups by Name                            ║");
-    Console.WriteLine("║  15  ║ Search students by Name/Surname                  ║");
-    Console.WriteLine("╚══════╩══════════════════════════                           ");
+    Console.WriteLine("║  12  ║ SearchEducation                                  ║");
+    Console.WriteLine("║  13  ║ SearchGroups                                     ║");
+    Console.WriteLine("║  14  ║ GetAllWithGroups                                 ║");
+    Console.WriteLine("║  15  ║ SortWithCreatedDateEducation                     ║");
+    Console.WriteLine("║  16  ║ FilterByEducationName                            ║");
+    Console.WriteLine("║  17  ║ SortWithCapacity                                 ║");
+    Console.WriteLine("╚══════╩══════════════════════                             ");
 }

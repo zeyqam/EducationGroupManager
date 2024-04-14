@@ -22,9 +22,12 @@ namespace Repository.Repositories
             return await Task.FromResult(_context.Educations.Include(e => e.Groups));
         }
 
-        public Task<IEnumerable<Education>> SortByCreatedDateAsync()
+        public async Task<IEnumerable<Education>> SortByCreatedDateAsync()
         {
-            throw new NotImplementedException();
+            
+            
+                return await _context.Educations.OrderBy(e => e.CreatedDate).ToListAsync();
+           
         }
     }
 }

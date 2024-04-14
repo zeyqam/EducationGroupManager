@@ -14,6 +14,7 @@ namespace EducationGroupManager.Controllers
     public class EducationController
     {
         private readonly IEducationService _educationService;
+        private bool _ascendingOrder = true;
         public EducationController()
         {
             _educationService = new EducationService();
@@ -240,5 +241,54 @@ namespace EducationGroupManager.Controllers
             }
 
         }
+
+        public async Task GetAllWithGroupsAsync()
+        {
+            Console.WriteLine("Fetching all educations with groups...");
+
+            var educations = await _educationService.GetAllWithGroupsAsync();
+
+            if (educations != null && educations.Any())
+            {
+                foreach (var education in educations)
+                {
+                    Console.WriteLine($"Education ID: {education.Id}, Name: {education.Name}, Color: {education.Color}");
+                    Console.WriteLine("Groups:");
+
+                    foreach (var group in education.Groups)
+                    {
+                        Console.WriteLine($"  Group ID: {group.Id}, Name: {group.Name}, Capacity: {group.Capacity}");
+                    }
+
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("No educations found.");
+            }
+        }
+        public async Task SortByCreatedDateAsync()
+        {
+            string sortOrder = _ascendingOrder ? "ascending" : "descending";
+            Console.WriteLine($"Sorting educations by created date in {sortOrder} order...");
+
+            var educations = await _educationService.SortByCreatedDateAsync();
+
+            if (educations != null && educations.Any())
+            {
+                foreach (var education in educations)
+                {
+                    Console.WriteLine($"ID: {education.Id}, Name: {education.Name}, Created Date: {education.CreatedDate}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No educations found.");
+            }
+        }
+
     }
 }
+    
+

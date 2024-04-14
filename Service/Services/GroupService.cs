@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Repositories;
 using Repository.Repositories.Interfaces;
 using Service.Helpers.Constants;
@@ -69,6 +70,11 @@ namespace Service.Services
             await _groupRepo.DeleteAsync(group);
         }
 
+        public async Task<IEnumerable<Group>> FilterByEducationNameAsync(string educationName)
+        {
+            return await _groupRepo.FilterByEducationNameAsync(educationName);
+        }
+
         public  async Task<IEnumerable<Group>> GetAllAsync()
         {
             return await _groupRepo.GetAllAsync();
@@ -110,6 +116,11 @@ namespace Service.Services
 
             Expression<Func<Group, bool>> predicate = group => group.Name.ToLower().Contains(name);
             return await _groupRepo.SearchAsync(predicate);
+        }
+
+        public  async Task<IEnumerable<Group>> SortByCapacityAsync()
+        {
+            return await _groupRepo.SortWithCapacityAsync();
         }
 
         public async Task UpdateGroupAsync(Group updateGroup)

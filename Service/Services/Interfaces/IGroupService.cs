@@ -17,5 +17,7 @@ namespace Service.Services.Interfaces
         Task<IEnumerable<Group>> GetGroupsByEducationIdAsync(int? educationId);
         Task UpdateGroupAsync(Group updateGroup);
         Task<IEnumerable<Group>> SearchGroupAsync(string name);
+        Task<IEnumerable<Group>> FilterByEducationNameAsync(string educationName);
+        Task<IEnumerable<Group>> SortByCapacityAsync();
     }
 }

@@ -16,6 +16,7 @@ namespace EducationGroupManager.Controllers
     public class GroupController
     {
         private readonly IGroupService _groupService;
+        private bool _ascendingOrder=true;
 
         public GroupController()
         {
@@ -317,6 +318,52 @@ namespace EducationGroupManager.Controllers
             }
 
         }
+        public async Task FilterByEducationNameAsync()
+        {
+            Console.WriteLine("Enter education name:");
+            string educationName = Console.ReadLine();
+
+            try
+            {
+                var groups = await _groupService.FilterByEducationNameAsync(educationName);
+                if (groups.Any())
+                {
+                    Console.WriteLine("\nMatching Groups:");
+                    foreach (var group in groups)
+                    {
+                        Console.WriteLine($"ID: {group.Id}, Name: {group.Name}, Capacity: {group.Capacity}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No groups found with the given education name.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+        public async Task SortByCapacityAsync()
+        {
+            string sortOrder = _ascendingOrder ? "ascending" : "descending";
+            Console.WriteLine($"Sorting educations by created date in {sortOrder} order...");
+
+            var groups = await _groupService.SortByCapacityAsync();
+
+            if (groups != null && groups.Any())
+            {
+                foreach (var group in groups)
+                {
+                    Console.WriteLine($"ID: {group.Id}, Name: {group.Name}, Capacity: {group.Capacity}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No educations found.");
+            }
+        }
+
 
 
     }

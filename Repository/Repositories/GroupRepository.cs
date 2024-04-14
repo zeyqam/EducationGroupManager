@@ -23,9 +23,19 @@ namespace Repository.Repositories
 
         }
 
-        public Task<IEnumerable<Group>> FilterByEducationNameAsync(string educationName)
+        public async Task<IEnumerable<Group>> FilterByEducationNameAsync(string educationName)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(educationName))
+            {
+                throw new ArgumentException("Education name cannot be null or empty.");
+            }
+
+            educationName = educationName.Trim().ToLower();
+
+            return await _context.Groups
+                .Include(g => g.Education)
+                .Where(g => g.Education.Name.ToLower().Contains(educationName))
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Group>> GetAllWithEducationIdAsync(int educationId)
@@ -35,9 +45,9 @@ namespace Repository.Repositories
             .ToListAsync();
         }
 
-        public Task<IEnumerable<Group>> SortWithCapacityAsync()
+        public async Task<IEnumerable<Group>> SortWithCapacityAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Groups.OrderBy(e => e.Capacity).ToListAsync();
         }
     }
 }
