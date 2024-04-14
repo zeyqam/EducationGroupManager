@@ -2,6 +2,7 @@
 using EducationGroupManager.Controllers;
 using Service.Helpers.Enums;
 using Service.Helpers.Extensions;
+using Service.Services;
 
 EducationController educationController= new EducationController();
 //await educationController.CreateEducationAsync();
@@ -9,11 +10,18 @@ GroupController groupController = new GroupController();
 //await groupController.GroupCreate();
 //await groupController.GetAllGroupsAsync();
 //await educationController.GetAllEducationAsync();
+UserController userController = new UserController();
+await userController.RegisterUserAsync();
+await userController.LoginUserAsync();
+
+
+
 
 while (true)
 {
-    GetMenus();
-    Operation: string operationStr=Console.ReadLine();
+    //await userController.GetMenusAsync();
+
+Operation: string operationStr=Console.ReadLine();
     int operation;
     bool isCorrectOperationFormat=int.TryParse(operationStr, out operation);
     if (isCorrectOperationFormat)
@@ -94,7 +102,7 @@ while (true)
         goto Operation;
     }
 }
-static void GetMenus()
+//static void GetMenus()
 {
     Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("╔════════════════════════════════════════════════════════╗");
