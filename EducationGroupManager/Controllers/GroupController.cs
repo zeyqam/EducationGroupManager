@@ -52,14 +52,14 @@ namespace EducationGroupManager.Controllers
             bool educationExists = false;
             do
             {
-                ConsoleColor.Cyan.WriteConsole("Təhsil İD-sini daxil edin:");
+                ConsoleColor.Cyan.WriteConsole("Tehsil İD-sini daxil edin:");
                 string educationIdInput = Console.ReadLine();
                 if (int.TryParse(educationIdInput, out educationId))
                 {
                     educationExists = await _groupService.CheckIfEducationExistsAsync(educationId);
                     if (!educationExists)
                     {
-                        ConsoleColor.Red.WriteConsole("Xəta: Daxil edilmiş təhsil İD-si mövcud deyil. Əvvəlcə təhsil yaradın.");
+                        ConsoleColor.Red.WriteConsole("Xeta: Daxil edilmiş tehsil İD-si movcud deyil. Təhsil yaradın.");
                     }
                 }
                 else
